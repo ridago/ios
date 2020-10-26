@@ -40,21 +40,8 @@ class NCViewer: NSObject {
         self.metadata = metadata
         self.metadatas = metadatas
         
-        // VIDEO AUDIO
-        if metadata.typeFile == k_metadataTypeFile_audio || metadata.typeFile == k_metadataTypeFile_video {
-            
-            if let navigationController = getPushNavigationController(viewController: viewController, serverUrl: metadata.serverUrl) {
-                let viewController:NCViewerVideo = UIStoryboard(name: "NCViewerVideo", bundle: nil).instantiateInitialViewController() as! NCViewerVideo
-            
-                viewController.metadata = metadata
-
-                navigationController.pushViewController(viewController, animated: true)
-            }
-            return
-        }
-        
-        // IMAGE
-        if metadata.typeFile == k_metadataTypeFile_image {
+        // IMAGE AUDIO VIDEO
+        if metadata.typeFile == k_metadataTypeFile_image || metadata.typeFile == k_metadataTypeFile_audio || metadata.typeFile == k_metadataTypeFile_video {
             
             if let navigationController = getPushNavigationController(viewController: viewController, serverUrl: metadata.serverUrl) {
                 
@@ -214,14 +201,15 @@ extension NCViewer: NCSelectDelegate {
     
     func dismissSelect(serverUrl: String?, metadata: tableMetadata?, type: String, items: [Any], buttonType: String, overwrite: Bool) {
         if let serverUrl = serverUrl {
+            let metadata = items[0] as! tableMetadata
             if buttonType == "done" {
-                NCNetworking.shared.moveMetadata(self.metadata, serverUrlTo: serverUrl, overwrite: overwrite) { (errorCode, errorDescription) in
+                NCNetworking.shared.moveMetadata(metadata, serverUrlTo: serverUrl, overwrite: overwrite) { (errorCode, errorDescription) in
                     if errorCode != 0 {
                         NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: TimeInterval(k_dismissAfterSecond), type: NCContentPresenter.messageType.error, errorCode: errorCode)
                     }
                 }
             } else {
-                NCNetworking.shared.copyMetadata(self.metadata, serverUrlTo: serverUrl, overwrite: overwrite) { (errorCode, errorDescription) in
+                NCNetworking.shared.copyMetadata(metadata, serverUrlTo: serverUrl, overwrite: overwrite) { (errorCode, errorDescription) in
                     if errorCode != 0 {
                         NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: TimeInterval(k_dismissAfterSecond), type: NCContentPresenter.messageType.error, errorCode: errorCode)
                     }

@@ -26,7 +26,7 @@ import Foundation
 
 class NCViewerImageVideo: UIViewController {
     
-    @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var closeView: UIView!
     @IBOutlet weak var closeButton: UIButton!
 
@@ -41,12 +41,11 @@ class NCViewerImageVideo: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .black
-        closeView.layer.cornerRadius = 7
-        let image = CCGraphics.changeThemingColorImage(UIImage(named: "exit"), width: 50, height: 50, color: .black)
-        closeButton.setImage(image, for: .normal)
         
-        let frame = CGRect(x: 0, y: 0, width: self.backgroundView.frame.width, height: self.backgroundView.frame.height)
-        NCViewerVideoCommon.shared.viewMedia(metadata, view: backgroundView, frame: frame)
+        closeView.layer.cornerRadius = 7
+        closeView.backgroundColor = UIColor(red: 36.0/255.0, green: 36.0/255.0, blue: 36.0/255.0, alpha: 1.0)
+        
+        NCViewerVideoCommon.shared.viewMedia(metadata, view: videoView, frame: CGRect(x: 0, y: 0, width: videoView.frame.width, height: videoView.frame.height))
     }
     
     @IBAction func touchUpInsidecloseButton(_ sender: Any) {

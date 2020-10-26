@@ -72,6 +72,12 @@ class NCViewerImageZoom: UIViewController {
         view.addGestureRecognizer(doubleTapGestureRecognizer)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        delegate?.viewWillAppearImageZoom(viewerImageZoom: self, metadata: metadata)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -142,6 +148,7 @@ class NCViewerImageZoom: UIViewController {
         self.image = image
         imageView.image = image
         
+        // horrible but works very good
         if delegate?.navigationController?.navigationBar.isHidden ?? false {
             delegate?.navigationController?.setNavigationBarHidden(false, animated: false)
             delegate?.navigationController?.setNavigationBarHidden(true, animated: false)
